@@ -15,6 +15,7 @@ root.title('Send Email to excel file recipients')
 root.geometry('500x200')
 root.minsize(500,200)
 root.maxsize(500,200)
+newFileSelectLabel = Label(text='Email messages to addresses from latest excel file in downloads folder').pack()
 
 def send_mails(receivers,messages):
     print("in sendMails")
@@ -53,6 +54,7 @@ def get_latest_excel_file():
     latest_file = max(excel_files, key=os.path.getctime)
     
     latest_file_name = latest_file.split('/')[-1]
+    
     f = open('db.txt','r+')
     lines = f.readlines()
     
@@ -74,7 +76,7 @@ def get_latest_excel_file():
             send_mails(recipient_list,message_text_list)
             message_alert = str(pd.read_excel(latest_file)['Message'].count())+" mails sent"
             msg = messagebox.showinfo("Alert",message_alert)
-            msg.pack()
+            
             f = open('db.txt','a+')
             
             f.write(latest_file_name+":"+str(pd.read_excel(latest_file)['Message'].count())+" Mails Sent"+'\n')
@@ -92,7 +94,7 @@ def get_latest_excel_file():
 
 
 
-newFileSelectLabel = Label(text='Email messages to addresses from latest excel file in downloads folder').pack()
+
 # mailBodyText = Label(text='Enter mail message:').pack()
 # mailBody = Text(root,height=5,width=20).pack()
 checkNewFileButton = Button(text='Send',command=get_latest_excel_file).pack()
